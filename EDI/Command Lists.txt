@@ -1,0 +1,5 @@
+Possible Command Lists: 
+Rage:  A command to count user rage quits
+     Called with #Rage @"Username"
+Poking: Links poking video
+    Called with #Poking

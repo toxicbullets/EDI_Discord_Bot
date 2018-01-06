@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Bot
 import asyncio
+import cm_rage
 
 bot = commands.Bot(command_prefix='#')
 
@@ -38,6 +39,17 @@ async def serverinfo(ctx):
 
 @bot.command(pass_context= True)
 async def Rage(ctx, user: discord.Member):
+    num = cm_rage.Raged(ctx, user)
+    await bot.say("{} has Rage Quit {} times".format(user.name, num[1]))
+
+@bot.command(pass_context = True)
+async def RageScore(ctx):
+    results = cm_rage.leaderboards(ctx)
+    embed = discord.Embed(name="{}'s Rage Leaderboards".format(ctx.message.server.name), description = "Here are the scores:", color = 0x00ff00)
+    embed.add_field(name= "Leaderboard", value = results, inline = True)
+    embed.set_thumbnail(url=ctx.message.server.icon_url)
+    await bot.say(embed = embed)
+ 
     
 
 

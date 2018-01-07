@@ -13,7 +13,10 @@ async def on_ready():
 
 #Commands
 
+#Info Commands
+
 #called using #info @"Username"
+#Returns the information about the entered User
 @bot.command(pass_context=True)
 async def info(ctx, user: discord.Member):
     embed = discord.Embed(title = "{}'s info".format(user.name), description= "Here's what I could find.", color = 0x00ff00)
@@ -26,6 +29,7 @@ async def info(ctx, user: discord.Member):
     await bot.say(embed = embed)
 
 #called using #serverinfo
+#Returns the server information
 @bot.command(pass_context = True)
 async def serverinfo(ctx):
     embed = discord.Embed(title="{}'s info".format(ctx.message.server.name), description = "Here's what I could find", color = 0x00ff00)
@@ -36,11 +40,18 @@ async def serverinfo(ctx):
     embed.set_thumbnail(url=ctx.message.server.icon_url)
     await bot.say(embed = embed)
 
+
+#Action Commands
+
+#called using #Rage @Username
+#Increments rage score and returns the users current score
 @bot.command(pass_context= True)
 async def Rage(ctx, user: discord.Member):
     num = cm_rage.Raged(ctx, user)
     await bot.say("{} has Rage Quit {} times".format(user.name, num[1]))
 
+#called using #RageScore
+#Returns the leaderboards for the rage scores in the database
 @bot.command(pass_context = True)
 async def RageScore(ctx):
     embed = discord.Embed(title="{}'s Rage Leaderboards".format(ctx.message.server.name), description = "Here are the scores:", color = 0x00ff00)
@@ -53,10 +64,16 @@ async def RageScore(ctx):
     embed.set_thumbnail(url=ctx.message.server.icon_url)
     await bot.say(embed = embed)
  
+
+@bot.command(pass_context = True)
+async def Poking(ctx):
+    #embed = discord.Embed(title="I Was Just Poking", description = "https://www.youtube.com/watch?v=eBSzO29pUK0", color = 0x00ff00)
+    await bot.say("**I Was Just Poking** \n https://www.youtube.com/watch?v=eBSzO29pUK0")
     
 
 
 #called by using #kick @"Username"
+#kicks user in the caller has a Admin role
 @bot.command(pass_context=True)
 @commands.has_role("Admin")
 async def kick(ctx, user: discord.Member):

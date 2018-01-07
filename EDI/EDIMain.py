@@ -28,8 +28,7 @@ async def info(ctx, user: discord.Member):
 #called using #serverinfo
 @bot.command(pass_context = True)
 async def serverinfo(ctx):
-    embed = discord.Embed(name="{}'s info".format(ctx.message.server.name), description = "Here's what I could find", color = 0x00ff00)
-    embed.set_author(name = "EDI Artifical Intelligence")
+    embed = discord.Embed(title="{}'s info".format(ctx.message.server.name), description = "Here's what I could find", color = 0x00ff00)
     embed.add_field(name= "Name", value= ctx.message.server.name, inline = True)
     embed.add_field(name= "ID", value= ctx.message.server.id, inline = True)
     embed.add_field(name= "Roles", value=len(ctx.message.server.roles), inline = True)
@@ -44,9 +43,13 @@ async def Rage(ctx, user: discord.Member):
 
 @bot.command(pass_context = True)
 async def RageScore(ctx):
+    embed = discord.Embed(title="{}'s Rage Leaderboards".format(ctx.message.server.name), description = "Here are the scores:", color = 0x00ff00)
     results = cm_rage.leaderboards(ctx)
-    embed = discord.Embed(name="{}'s Rage Leaderboards".format(ctx.message.server.name), description = "Here are the scores:", color = 0x00ff00)
-    embed.add_field(name= "Leaderboard", value = results, inline = True)
+    formatted = ""
+    for values in results:
+        formatted += '{:12}   {:>4} Rages\n'.format(str(values[0]), str(values[1]))
+        print(formatted)
+    embed.add_field(name= "Leaderboard", value = formatted, inline = True)
     embed.set_thumbnail(url=ctx.message.server.icon_url)
     await bot.say(embed = embed)
  

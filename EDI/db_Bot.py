@@ -37,9 +37,11 @@ def incrementRage(name):
         return altered
 
 def RageLeaderboards():
-    c.execute("SELECT * FROM rage")
-    data = c.fetchall()
-    return data;
+    c.execute("SELECT * FROM rage ORDER BY num DESC")
+    data = []
+    for values in c.fetchall():
+        data.append(values)
+    return data
 
 
 def data_entry():

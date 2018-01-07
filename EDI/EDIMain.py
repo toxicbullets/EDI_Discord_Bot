@@ -1,11 +1,18 @@
 #EDI by Jordan
 import discord
+import threading
 from discord.ext import commands
 from discord.ext.commands import Bot
 import asyncio
+import random
+import time
 import cm_rage
+import cm_duck
 
+duck = True
 bot = commands.Bot(command_prefix='#')
+channel = None
+
 
 @bot.event
 async def on_ready():
@@ -64,12 +71,16 @@ async def RageScore(ctx):
     embed.set_thumbnail(url=ctx.message.server.icon_url)
     await bot.say(embed = embed)
  
-
+#Call with #Poking
+# Returns an inside joke with its corresponding video
 @bot.command(pass_context = True)
 async def Poking(ctx):
     #embed = discord.Embed(title="I Was Just Poking", description = "https://www.youtube.com/watch?v=eBSzO29pUK0", color = 0x00ff00)
-    await bot.say("**I Was Just Poking** \n https://www.youtube.com/watch?v=eBSzO29pUK0")
-    
+    await bot.send_message(ctx.message.channel, '**I Was Just Poking** ', tts = True)
+    await bot.say("https://www.youtube.com/watch?v=eBSzO29pUK0")
+
+
+
 
 
 #called by using #kick @"Username"
@@ -80,8 +91,59 @@ async def kick(ctx, user: discord.Member):
     await bot.say(":boot: Cya, {}. Ya Creep!".format(user.name))
     await bot.kick(user)
 
+#called with #Bang  Shoots duck is there is one
+@bot.command(pass_context=True)
+async def Bang(ctx):
+    global duck
+    if duck:
+        value = cm_duck.duckShoot(ctx)
+        await bot.say("{} has shot {} ducks".format(value[0], value[1])) 
+        duck = False
+    else:
+        await bot.say("Why are you shooting? There are no ducks here you creep")
+
+#called with #Bef   Befriends duck is there is one
+@bot.command(pass_context=True)
+async def Bef(ctx):
+    global duck
+    if duck:
+        value = cm_duck.duckFriend(ctx);
+        await bot.say("{} has befriended {} ducks".format(value[0], value[2]))   
+        duck = False
+    else:
+        await bot.say("You can befriend a duck that doesn't exist. Are you crazy?")
+
+#called using #DuckScore
+#Returns the leaderboards for the duck scores in the database
+@bot.command(pass_context = True)
+async def DuckScore(ctx):
+    embed = discord.Embed(title="{}'s Duck Leaderboards".format(ctx.message.server.name), description = "Here are the scores:", color = 0x00ff00)
+    results = cm_duck.leaderboards(ctx)
+    formatted = ""
+    for values in results:
+        formatted += '{:10} {:>4} ducks shot {:>4} ducks befriended\n'.format(str(values[0]), str(values[1]), str(values[2]))
+    embed.add_field(name= "Leaderboard", value = formatted, inline = True)
+    embed.set_thumbnail(url=ctx.message.server.icon_url)
+    await bot.say(embed = embed)
+
+#loops the duck spawning system
+async def background_loop():
+    await bot.wait_until_ready()
+    channel = bot.get_channel("398960997731139597")
+    print(channel)
+    while not bot.is_closed:
+        value = random.randint(0,5)
+        print("Quack " + str(value))
+        if value == 1:
+            global duck
+            duck = True 
+            await bot.send_message(channel, "....Quack 🦆")
+        await asyncio.sleep(300)
+
+bot.loop.create_task(background_loop())
 
 
 
 bot.run("Mzk4OTYwNTk5OTIyNTA3Nzc2.DTGJTg.JelJeOhrlz5MJ7fEgIC7XvFSg8o")
+
 

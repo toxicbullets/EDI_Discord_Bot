@@ -8,8 +8,9 @@ import random
 import time
 import cm_rage
 import cm_duck
+import cm_league
 
-duck = True
+duck = False
 bot = commands.Bot(command_prefix='#')
 channel = None
 
@@ -21,6 +22,7 @@ async def on_ready():
 #Commands
 
 #Info Commands
+#************************************************************************************************************************************************
 
 #called using #info @"Username"
 #Returns the information about the entered User
@@ -49,6 +51,7 @@ async def serverinfo(ctx):
 
 
 #Action Commands
+#************************************************************************************************************************************************
 
 #called using #Rage @Username
 #Increments rage score and returns the users current score
@@ -81,12 +84,10 @@ async def Poking(ctx):
 
 
 
-
-
 #called by using #kick @"Username"
 #kicks user in the caller has a Admin role
 @bot.command(pass_context=True)
-@commands.has_role("Admin")
+@commands.has_role("root")
 async def kick(ctx, user: discord.Member):
     await bot.say(":boot: Cya, {}. Ya Creep!".format(user.name))
     await bot.kick(user)
@@ -129,18 +130,43 @@ async def DuckScore(ctx):
 #loops the duck spawning system
 async def background_loop():
     await bot.wait_until_ready()
-    channel = bot.get_channel("398960997731139597")
+    channel = bot.get_channel("266335971606265857")
     print(channel)
     while not bot.is_closed:
-        value = random.randint(0,5)
+        value = random.randint(0,10)
         print("Quack " + str(value))
         if value == 1:
             global duck
             duck = True 
             await bot.send_message(channel, "....Quack 🦆")
-        await asyncio.sleep(300)
+        await asyncio.sleep(120)
 
 bot.loop.create_task(background_loop())
+
+
+#Web Accessing Commands
+#************************************************************************************************************************************************
+#called using #DuckScore
+#Returns the leaderboards for the duck scores in the database
+@bot.command()
+async def LeagueStats(userID : str):
+    results = cm_league.getLeagueStats(userID)
+    if results == None:
+        print("Error with stats")
+        await bot.say("Invalid Summoner Name")
+        return None
+    embed = discord.Embed(title="{}'s League Stats".format(userID), description = "Here are the numbers:", color = 0x00ff00)
+    embed.add_field(name= "Account Level", value = str(results[0]), inline = True)
+    embed.add_field(name= "Summoner ID", value = str(results[1]), inline = True)
+    embed.set_thumbnail(url= "https://avatar.leagueoflegends.com/na/" + userID + ".png")
+    if len(results) != 2:
+        embed.add_field(name= "Rank", value = str(results[2]), inline = True)
+        embed.add_field(name= "Division", value = str(results[3]), inline = True)
+        embed.add_field(name= "League Points", value = str(results[4]), inline = True)
+        embed.add_field(name= "Win Rate", value = "{0:.2f}".format(results[5]), inline = True)
+    await bot.say(embed = embed)
+
+
 
 
 

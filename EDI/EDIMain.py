@@ -139,7 +139,7 @@ async def background_loop():
             global duck
             duck = True 
             await bot.send_message(channel, "....Quack 🦆")
-        await asyncio.sleep(120)
+        await asyncio.sleep(300)
 
 bot.loop.create_task(background_loop())
 

@@ -118,14 +118,23 @@ async def Bef(ctx):
 #Returns the leaderboards for the duck scores in the database
 @bot.command(pass_context = True)
 async def DuckScore(ctx):
-    embed = discord.Embed(title="{}'s Duck Leaderboards".format(ctx.message.server.name), description = "Here are the scores:", color = 0x00ff00)
+    embed = discord.Embed(title="{}'s Duck Leaderboards".format(ctx.message.server.name), description = "Ducks Shot:", color = 0x00ff00)
     results = cm_duck.leaderboards(ctx)
     formatted = ""
-    for values in results:
-        formatted += '{:10} {:>4} ducks shot {:>4} ducks befriended\n'.format(str(values[0]), str(values[1]), str(values[2]))
+    for values in results[0]:
+        formatted += '{:10}          {:>4} ducks shot\n'.format(str(values[0]), str(values[1]))
     embed.add_field(name= "Leaderboard", value = formatted, inline = True)
     embed.set_thumbnail(url=ctx.message.server.icon_url)
     await bot.say(embed = embed)
+    embed = discord.Embed(title="{}'s Duck Leaderboards".format(ctx.message.server.name), description = "Ducks Befriended:", color = 0x00ff00)
+    results = cm_duck.leaderboards(ctx)
+    formatted = ""
+    for values in results[1]:
+        formatted += '{:10}          {:>4} ducks befriended\n'.format(str(values[0]), str(values[2]))
+    embed.add_field(name= "Leaderboard", value = formatted, inline = True)
+    embed.set_thumbnail(url=ctx.message.server.icon_url)
+    await bot.say(embed = embed)
+    
 
 #loops the duck spawning system
 async def background_loop():
@@ -133,13 +142,13 @@ async def background_loop():
     channel = bot.get_channel("266335971606265857")
     print(channel)
     while not bot.is_closed:
-        value = random.randint(0,10)
+        value = random.randint(0,4)
         print("Quack " + str(value))
         if value == 1:
             global duck
             duck = True 
             await bot.send_message(channel, "....Quack 🦆")
-        await asyncio.sleep(300)
+        await asyncio.sleep(120)
 
 bot.loop.create_task(background_loop())
 

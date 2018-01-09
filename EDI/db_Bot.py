@@ -89,7 +89,12 @@ def incrementBang(name):
 
 def DuckLeaderboards():
     c.execute("SELECT * FROM duck ORDER BY bang DESC")
-    data = []
+    dataBef = []
+    dataBang = []
     for values in c.fetchall():
-        data.append(values)
+        dataBang.append(values)
+    c.execute("SELECT * FROM duck ORDER BY bef DESC")
+    for values in c.fetchall():
+        dataBef.append(values)
+    data = [dataBang,dataBef]
     return data

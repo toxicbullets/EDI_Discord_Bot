@@ -1,10 +1,9 @@
 import requests
 
-APIKEY = "RGAPI-99023c76-f589-4a2a-8693-11f883b0956d"
 payload = {
     "Origin": "https://developer.riotgames.com",
     "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-    "X-Riot-Token": "RGAPI-99023c76-f589-4a2a-8693-11f883b0956d",
+    "X-Riot-Token": "INSERTAPIKEYHERE",
     "Accept-Language": "en-US,en;q=0.9",
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36 OPR/49.0.2725.64"
 }

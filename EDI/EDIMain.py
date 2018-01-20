@@ -66,5 +66,5 @@ async def kick(ctx, user: discord.Member):
 
 
 
-bot.run("Mzk4OTYwNTk5OTIyNTA3Nzc2.DTGJTg.JelJeOhrlz5MJ7fEgIC7XvFSg8o")
+bot.run("")
 

@@ -57,5 +57,5 @@ async def embed(ctx):
     embed.add_field(name="This is a field", value="no it isn't", inline = True)
     await bot.say(embed = embed);
 
-bot.run("Mzk4OTYwNTk5OTIyNTA3Nzc2.DTGJTg.JelJeOhrlz5MJ7fEgIC7XvFSg8o")
+bot.run("")
 
